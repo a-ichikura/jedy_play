@@ -89,8 +89,8 @@ def act_random(act_name, json_filepath, n_split=None):
         except json.JSONDecodeError as e:
             print(e)
 
-        add_rd_2 = random.uniform(-0.5,0.5)
-        add_rd_4 = random.uniform(-0.5,0.5)
+        add_rd_2 = random.uniform(-0.1,0.1)
+        add_rd_4 = random.uniform(-0.1,0.1)
         #print("add_rd_2:{}".format(add_rd_2))
         if len(motion_dict) > 0:
             angles = motion_dict[act_name]
