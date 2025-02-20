@@ -9,6 +9,12 @@ import time
 from jedymodel import *
 from std_msgs.msg import Bool
 
+def start_draw():
+    draw_list = ["draw_1","draw_2","draw_3"]
+    motion = random.choice(draw_list)
+    print("motion name:{}".format(motion))
+    act_random(motion,"/home/leus/jedy_test.json")
+
 def play_low(module):
     #動作開始
     time.sleep(3)
@@ -18,14 +24,18 @@ def play_low(module):
     module.color_change(2,True)
     ri.servo_on()
     ri.angle_vector([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1.0,0.5,0,0,0,0],1.0,controller_type="head_controller")
+    ri.wait_interpolation()
     ri.servo_off()
     time.sleep(10) #10秒待つ(絵の具をつける)
     rospy.loginfo("please press button")
+    module.sound("please press button")
     msg = rospy.wait_for_message("/button_ispressed",Bool,timeout=None)
     ri.servo_on()
     ri.angle_vector([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,0,0,0],1.0,controller_type="head_controller")
+    ri.wait_interpolation()
     module.sound("ready")
     ri.servo_off()
+    module.led(0,0,0,mode=3)
     rospy.loginfo("now drawing")
     time.sleep(10) #10秒待つ(絵を描く)
     module.sound("joy")
@@ -41,15 +51,19 @@ def play_middle(module):
     module.color_change(2,True)
     ri.servo_on()
     ri.angle_vector([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1.0,0.5,0,0,0,0],1.0,controller_type="head_controller")
+    ri.wait_interpolation()
     ri.servo_off()
     time.sleep(10) #10秒待つ(絵の具をつける)
     rospy.loginfo("please press button")
+    module.sound("please press button")
     msg = rospy.wait_for_message("/button_ispressed",Bool,timeout=None)
     servo_on()
     ri.angle_vector([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,0,0,0],1.0,controller_type="head_controller")
+    ri.wait_interpolation()
     module.sound("ready")
     rospy.loginfo("Now ready")
-    act_random("draw_1","/home/leus/jedy_test.json")
+    module.led(0,0,0,mode=3)
+    start_draw()
     act("init_pose","/home/leus/jedy_test.json")
     module.sound("joy")
     rospy.loginfo("Done")
@@ -65,8 +79,9 @@ def play_high(module):
     ri.servo_on()
     act("coloring","/home/leus/jedy_test.json")
     module.sound("ready")
+    module.led(0,0,0,mode=3)
     rospy.loginfo("Now ready")
-    act_random("draw_1","/home/leus/jedy_test.json")
+    start_draw()
     act("init_pose","/home/leus/jedy_test.json")
     module.sound("joy")
     rospy.loginfo("Done")
