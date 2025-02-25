@@ -87,3 +87,12 @@ def play_high(module):
     rospy.loginfo("Done")
     module.color_change(0,False)
     
+def greeting(module):
+    time.sleep(3)
+    module.color_change(2,True)
+    msg = rospy.wait_for_message("/button_ispressed",Bool,timeout=None)
+    module.led(0,0,0,mode=3)
+    servo_on()
+    act("byebye","/home/leus/jedy_test.json")
+    module.color_change(0,False)
+    

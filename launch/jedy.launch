@@ -1,0 +1,17 @@
+<launch>
+
+  <!--<arg name="urdf_path" default="$(find jedy_description)/urdf/jedy.urdf" />-->
+  <!-- <arg name="servo_config_path" value="$(find kxr_models)/config/kuromitsu_servo_config.yaml" /> -->
+
+  <include file="$(find jedy_bringup)/launch/minimal.launch" >
+    <!--<arg name="urdf_path" value="$(arg urdf_path)" />
+    <arg name="servo_config_path" value="$(arg servo_config_path)" />-->
+  </include>
+
+  <!-- <include file="$(find kxr_controller)/launch/joy.launch" /> -->
+  <node pkg="rosserial_python" name="serial_node" type="serial_node.py">
+	<param name="~port" value="/dev/ttyUSB0"/>
+	<param name="~baud" value="115200"/>
+  </node>
+  
+</launch>

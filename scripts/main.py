@@ -2,7 +2,7 @@ import rospy
 
 from module import Module_node
 #from jedymodel import *
-from ability import play_low,play_middle,play_high
+from ability import play_low,play_middle,play_high,greeting
 import time
 
 if __name__ == '__main__':
@@ -18,6 +18,8 @@ if __name__ == '__main__':
                 play_middle(module)
             elif user_input == "high":
                 play_high(module)
+            elif user_input == "greeting":
+                greeting(module)
             else:
                 print("Invalid input. Please enter 'low','middle' or 'high'.")
     except KeyboardInterrupt:

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>jsk_2023_12_codesign</name>
+  <name>jedy_play</name>
   <version>0.0.0</version>
-  <description>The co-designed robots package</description>
+  <description>Jedy playing package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
