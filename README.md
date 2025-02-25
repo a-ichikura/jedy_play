@@ -1,10 +1,12 @@
 # Jedyでペイントを行う[WIP]
-## 実行方法
-M5 stick plus cとserial通信を開始
+##実行方法
+jedyの体内で
+
 ```
-rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB0 _baud:=115200
+roslaunch jedy_play jedy.launch
 ```
-Pythonコードで実行
+↑minmal.launchの立ち上げ+M5 stick C Plusとの通信開始
+手元のPCでPythonコードで実行
 ```
 cd scripts
 python main.py
