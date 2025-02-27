@@ -9,11 +9,14 @@ import time
 from jedymodel import *
 from std_msgs.msg import Bool
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(script_dir,"..","config","jedy_test.json")
+
 def start_draw():
     draw_list = ["draw_1","draw_2","draw_3"]
     motion = random.choice(draw_list)
     print("motion name:{}".format(motion))
-    act_random(motion,"/home/leus/jedy_test.json")
+    act_random(motion,config_path)
 
 def play_low(module):
     #動作開始
@@ -64,7 +67,7 @@ def play_middle(module):
     rospy.loginfo("Now ready")
     module.led(0,0,0,mode=3)
     start_draw()
-    act("init_pose","/home/leus/jedy_test.json")
+    act("init_pose",config_path)
     module.sound("joy")
     rospy.loginfo("Done")
     module.color_change(0,False)
@@ -77,12 +80,12 @@ def play_high(module):
     module.sound("help")
     module.color_change(2,True)
     ri.servo_on()
-    act("coloring","/home/leus/jedy_test.json")
+    act("coloring",config_path)
     module.sound("ready")
     module.led(0,0,0,mode=3)
     rospy.loginfo("Now ready")
     start_draw()
-    act("init_pose","/home/leus/jedy_test.json")
+    act("init_pose",config_path)
     module.sound("joy")
     rospy.loginfo("Done")
     module.color_change(0,False)
@@ -93,6 +96,6 @@ def greeting(module):
     msg = rospy.wait_for_message("/button_ispressed",Bool,timeout=None)
     module.led(0,0,0,mode=3)
     servo_on()
-    act("byebye","/home/leus/jedy_test.json")
+    act("byebye",config_path)
     module.color_change(0,False)
     
