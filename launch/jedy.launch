@@ -1,12 +1,26 @@
 <launch>
+65;6003;1c
 
-  <!--<arg name="urdf_path" default="$(find jedy_description)/urdf/jedy.urdf" />-->
-  <!-- <arg name="servo_config_path" value="$(find kxr_models)/config/kuromitsu_servo_config.yaml" /> -->
+  <arg name="urdf_path" default="$(find kxr_humanoid_movebase_ichikura)/urdf/jedy_fix.urdf" />
+  <arg name="servo_config_path" default="$(find kxr_humanoid_movebase_ichikura)/config/jedy_servo_config.yaml" />
+
+  <!-- jedy_controllers.yaml を最初にロード -->
+  <rosparam file="$(find jedy_play)/config/jedy_controllers.yaml" />
+
+  <!-- default_controller を手動で設定（minimal.launch の影響を回避） -->
+  <rosparam param="default_controller">
+    - head_controller
+    - rarm_controller
+    - larm_controller
+  </rosparam>
+
 
   <include file="$(find jedy_bringup)/launch/minimal.launch" >
-    <!--<arg name="urdf_path" value="$(arg urdf_path)" />
-    <arg name="servo_config_path" value="$(arg servo_config_path)" />-->
+    <arg name="urdf_path" value="$(arg urdf_path)" />
+    <!-- <arg name="servo_config_path" value="$(arg servo_config_path)" />-->
   </include>
+
+  <rosparam file="$(find jedy_play)/config/jedy_controllers.yaml" />
 
   <!-- <include file="$(find kxr_controller)/launch/joy.launch" /> -->
   <node pkg="rosserial_python" name="serial_node" type="serial_node.py">
