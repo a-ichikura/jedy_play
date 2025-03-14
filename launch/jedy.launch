@@ -1,7 +1,7 @@
 <launch>
 65;6003;1c
 
-  <arg name="urdf_path" default="$(find kxr_humanoid_movebase_ichikura)/urdf/jedy_fix.urdf" />
+  <arg name="urdf_path" default="$(find kxr_humanoid_movebase_ichikura)/urdf/kxr_humanoid_movebase_ichikura_fixed_0.urdf" />
   <arg name="servo_config_path" default="$(find kxr_humanoid_movebase_ichikura)/config/jedy_servo_config.yaml" />
 
   <!-- jedy_controllers.yaml を最初にロード -->
@@ -17,7 +17,7 @@
 
   <include file="$(find jedy_bringup)/launch/minimal.launch" >
     <arg name="urdf_path" value="$(arg urdf_path)" />
-    <!-- <arg name="servo_config_path" value="$(arg servo_config_path)" />-->
+    <arg name="servo_config_path" value="$(arg servo_config_path)" />
   </include>
 
   <rosparam file="$(find jedy_play)/config/jedy_controllers.yaml" />
