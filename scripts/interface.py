@@ -41,7 +41,8 @@ def save_angle_vector_mode():
 
 rospy.init_node('interface_controller')
 r = RobotModel()
-urdf_path = resolve_filepath("", "package://jedy_description/urdf/" + robot_name + ".urdf")
+#urdf_path = resolve_filepath("", "package://jedy_description/urdf/" + robot_name + ".urdf")
+urdf_path = resolve_filepath("", "package://kxr_humanoid_movebase_ichikura/urdf/" + robot_name + ".urdf")
 print(urdf_path)
 with open(urdf_path) as f:
     #r.load_urdf_from_robot_description(f)

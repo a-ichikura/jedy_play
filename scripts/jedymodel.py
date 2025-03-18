@@ -25,11 +25,14 @@ from kxr_controller.msg import ServoOnOffGoal
 from kxr_controller.kxr_interface import KXRROSRobotInterface
 from kxr_models.download_urdf import download_urdf_mesh_files
 
+from jedy_interface import IJedyROSRobotInterface
+
 robot_name = rospy.get_param("/robot_name")
 rospy.init_node('interface_controller')
 
 r = RobotModel()
-urdf_path = resolve_filepath("", "package://jedy_description/urdf/" + robot_name + ".urdf")
+#urdf_path = resolve_filepath("", "package://jedy_description/urdf/" + robot_name + ".urdf")
+urdf_path = resolve_filepath("", "package://kxr_humanoid_movebase_ichikura/urdf/" + robot_name + ".urdf")
 print(urdf_path)
 with open(urdf_path) as f:
     #r.load_urdf_from_robot_description(f)                                                                                                  
@@ -45,6 +48,7 @@ for j in r.joint_list:
 namespace = ""
 #download_urdf_mesh_files(namespace)
 ri = KXRROSRobotInterface(r, namespace=None,controller_timeout=10)
+#ri = IJedyROSRobotInterface(r, namespace=None,controller_timeout=10)
 
 def servo_on():
     ri.servo_on()

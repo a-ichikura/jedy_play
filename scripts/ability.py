@@ -95,4 +95,12 @@ def greeting(module):
     servo_on()
     act("byebye","/home/leus/jedy_test.json")
     module.color_change(0,False)
+
+def draw_heart(module):
+    time.sleep(3)
+    module.led(0,0,0,mode=3)
+    module.sound("Now ready to draw a heart!")
+    servo_on()
+    act("heart_1","/home/leus/jedy_test.json")
+    module.color_change(0,False)
     
