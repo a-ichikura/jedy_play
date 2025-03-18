@@ -5,7 +5,6 @@
 (load "package://kxreus/euslisp/kxr-interface.l")
 (load "package://jedy_play/euslisp/ichikura-jedy.l")
 
-
 (defun calc-yaw-pitch-roll (linear-acceleration)
   (let* ((x (send linear-acceleration :x))
          (y (send linear-acceleration :y))
