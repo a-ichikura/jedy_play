@@ -3,7 +3,7 @@
 (ros::roseus-add-msgs "std_msgs")
 (ros::roseus-add-msgs "sensor_msgs")
 (load "package://kxreus/euslisp/kxr-interface.l")
-(load "package://jedy_play/euslisp/ichikura-jedy.l")
+(load "package://jedy_play/euslisp/tmp.l")
 
 (defun calc-yaw-pitch-roll (linear-acceleration)
   (let* ((x (send linear-acceleration :x))
