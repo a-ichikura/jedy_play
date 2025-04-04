@@ -14,6 +14,7 @@ from kxr_controller.msg import ServoOnOffAction
 from kxr_controller.msg import ServoOnOffGoal
 from kxr_controller.kxr_interface import KXRROSRobotInterface
 from kxr_models.download_urdf import download_urdf_mesh_files
+from jedy_interface import IJedyROSRobotInterface
 
 #from save_angle_vector import save_angle_vector_mode
 robot_name = rospy.get_param("/robot_name")
@@ -57,4 +58,5 @@ for j in r.joint_list:
         j.max_joint_velocity = 10.0
 namespace = ""
 #download_urdf_mesh_files(namespace)
-ri = KXRROSRobotInterface(r, namespace=None,controller_timeout=10)
+#ri = KXRROSRobotInterface(r, namespace=None,controller_timeout=10)
+ri = IJedyROSRobotInterface(r, namespace=None,controller_timeout=10)
