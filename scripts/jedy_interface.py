@@ -28,7 +28,8 @@ class IJedyROSRobotInterface(KXRROSRobotInterface):
                          'larm_joint2',
                          'larm_joint3',
                          'larm_joint4',
-                         'larm_gripper_joint'])
+                         'larm_joint5',
+                         'larm_joint6'])
 
     @property
     def rarm_controller(self):
@@ -42,7 +43,8 @@ class IJedyROSRobotInterface(KXRROSRobotInterface):
                          'rarm_joint2',
                          'rarm_joint3',
                          'rarm_joint4',
-                         'rarm_gripper_joint'])
+                         'rarm_joint5',
+                         'rarm_joint6'])
 
     @property
     def head_controller(self):

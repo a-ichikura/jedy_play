@@ -27,12 +27,12 @@ from kxr_models.download_urdf import download_urdf_mesh_files
 
 from jedy_interface import IJedyROSRobotInterface
 
-robot_name = rospy.get_param("/robot_name")
-rospy.init_node('interface_controller')
+#robot_name = rospy.get_param("/robot_name")
+rospy.init_node('jedymodel_controller')
 
 r = RobotModel()
 #urdf_path = resolve_filepath("", "package://jedy_description/urdf/" + robot_name + ".urdf")
-urdf_path = resolve_filepath("", "package://kxr_humanoid_movebase_ichikura/urdf/" + robot_name + ".urdf")
+urdf_path = resolve_filepath("", "package://kxr_humanoid_movebase_ichikura_version2/urdf/jedy.urdf")
 print(urdf_path)
 with open(urdf_path) as f:
     #r.load_urdf_from_robot_description(f)                                                                                                  
@@ -47,8 +47,8 @@ for j in r.joint_list:
         j.max_joint_velocity = 10.0
 namespace = ""
 #download_urdf_mesh_files(namespace)
-ri = KXRROSRobotInterface(r, namespace=None,controller_timeout=10)
-#ri = IJedyROSRobotInterface(r, namespace=None,controller_timeout=10)
+#ri = KXRROSRobotInterface(r, namespace=None,controller_timeout=10)
+ri = IJedyROSRobotInterface(r, namespace=None,controller_timeout=10)
 
 def servo_on():
     ri.servo_on()
@@ -79,7 +79,7 @@ def act(act_name, json_filepath, n_split=None):
                 ri.angle_vector(av, 0.1)
                 # ri.wait_interpolation()
                 rospy.sleep(0.05)
-        ri.servo_off()
+        #ri.servo_off()
     else:
         print("There is not such file.")
 

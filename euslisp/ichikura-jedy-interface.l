@@ -3,7 +3,7 @@
 (ros::roseus-add-msgs "std_msgs")
 (ros::roseus-add-msgs "sensor_msgs")
 (load "package://kxreus/euslisp/kxr-interface.l")
-(load "package://jedy_play/euslisp/ichikura-jedy.l")
+(load "package://jedy_play/euslisp/jedy.l")
 
 (defun calc-yaw-pitch-roll (linear-acceleration)
   (let* ((x (send linear-acceleration :x))
@@ -34,13 +34,15 @@
                                          "rarm_joint2"
                                          "rarm_joint3"
                                          "rarm_joint4"
-                                         "rarm_gripper_joint"
+					 "rarm_joint5"
+					 "rarm_joint6"
                                          "larm_joint0"
                                          "larm_joint1"
                                          "larm_joint2"
                                          "larm_joint3"
                                          "larm_joint4"
-                                         "larm_gripper_joint"
+					 "larm_joint5"
+					 "larm_joint6"
                                          "head_joint0"
                                          "head_joint1")
                 args)
@@ -93,12 +95,12 @@
                (send robot :angle-vector (send self :state :potentio-vector))
                (cond arm
                      (:rarm
-                      (send robot :rarm_gripper_joint :joint-angle 30))
+                      (send robot :rarm_joint6 :joint-angle 30))
                      (:larm
-                      (send robot :larm_gripper_joint :joint-angle 30))
+                      (send robot :larm_joint6 :joint-angle 30))
                      (:arms
-                      (send robot :rarm_gripper_joint :joint-angle 30)
-                      (send robot :larm_gripper_joint :joint-angle 30))
+                      (send robot :rarm_joint6 :joint-angle 30)
+                      (send robot :larm_joint6 :joint-angle 30))
                      (t (format t "[stop-grasp] Invalid arm ")))
                (send self :angle-vector (send robot :angle-vector) 1000)
                )
@@ -106,12 +108,12 @@
                (send robot :angle-vector (send self :state :potentio-vector))
                (cond arm
                      (:rarm
-                      (send robot :rarm_gripper_joint :joint-angle 30))
+                      (send robot :rarm_joint6 :joint-angle 30))
                      (:larm
-                      (send robot :larm_gripper_joint :joint-angle 30))
+                      (send robot :larm_joint6 :joint-angle 30))
                      (:arms
-                      (send robot :rarm_gripper_joint :joint-angle 30)
-                      (send robot :larm_gripper_joint :joint-angle 30))
+                      (send robot :rarm_joint6 :joint-angle 30)
+                      (send robot :larm_joint6 :joint-angle 30))
                      (t (format t "[start-grasp] Invalid arm ")))
                (send self :angle-vector (send robot :angle-vector) 1000)
                )
@@ -131,7 +133,7 @@
 	   (cons :controller-state "larm_controller/state")
 	   (cons :action-type control_msgs::FollowJointTrajectoryAction)
 	   (cons :joint-names (list "larm_joint0" "larm_joint1" "larm_joint2"
-                              "larm_joint3" "larm_joint4" "larm_gripper_joint")))))
+                              "larm_joint3" "larm_joint4" "larm_joint5" "larm_joint6")))))
   (:rarm-controller
    ()
    (list
@@ -140,7 +142,7 @@
 	   (cons :controller-state "rarm_controller/state")
 	   (cons :action-type control_msgs::FollowJointTrajectoryAction)
 	   (cons :joint-names (list "rarm_joint0" "rarm_joint1" "rarm_joint2"
-                              "rarm_joint3" "rarm_joint4" "rarm_gripper_joint")))))
+                              "rarm_joint3" "rarm_joint4" "rarm_joint5" "rarm_joint6")))))
   (:default-controller
       ()
       (append
@@ -157,7 +159,7 @@
                    (create-viewer t)
                    (controller-name "fullbody_controller"))
   (unless (boundp '*jedy*)
-    (setq *jedy* (kxr_humanoid_movebase_ichikura)))
+    (setq *jedy* (kxr_humanoid_movebase_ichikura_version2)))
   (unless without-ri
     (unless (ros::ok) (ros::roseus "jedy_eus_interface"))
     (unless (boundp '*ri*)
