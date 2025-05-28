@@ -71,9 +71,11 @@ def save_angle_vector_mode(ri, json_filepath=None):
     angles = []
 
     rate = rospy.Rate(30)
+    time_stamps = []
     while not rospy.is_shutdown():
         if current_state == CommandTypes.save.value:
             angles.append(ri.angle_vector())
+            time_stamps.append(rospy.Time.now())
         elif current_state == CommandTypes.play.value:
             break
         rate.sleep()
@@ -83,16 +85,24 @@ def save_angle_vector_mode(ri, json_filepath=None):
     ###
     print(len(angles))
     cnt = 0
+
+    speed = 1.0
+    tms = []
+    for prev_time, cur_time in zip(time_stamps[:-1], time_stamps[1:]):
+        tms.append((cur_time - prev_time).to_sec() / speed)
+    print(len(angles), len(tms))
     ####
     if len(angles) > 0:
         ri.angle_vector(angles[0], 3)
         ri.wait_interpolation()
-    for av in angles[1:]:
-        ri.angle_vector(av, 0.04)
-        # ri.wait_interpolation()
-        rate.sleep()
-        cnt += 1
-        print(cnt)
+    # for av in angles[1:]:
+    #     ri.angle_vector(av, 0.04)
+    #     # ri.wait_interpolation()
+    #     rate.sleep()
+    #     cnt += 1
+    #     print(cnt)
+    ri.angle_vector_sequence(angles[1:], tms)
+    ri.wait_interpolation()
     thread.join()
 
     print("thread.join end")
