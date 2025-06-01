@@ -11,13 +11,15 @@ fullbody_controller:
     - rarm_joint2
     - rarm_joint3
     - rarm_joint4
-    - rarm_gripper_joint
+    - rarm_joint5
+    - rarm_joint6
     - larm_joint0
     - larm_joint1
     - larm_joint2
     - larm_joint3
     - larm_joint4
-    - larm_gripper_joint
+    - larm_joint5
+    - larm_joint6
     - head_joint0
     - head_joint1
 
@@ -43,7 +45,8 @@ rarm_controller:
     - rarm_joint2
     - rarm_joint3
     - rarm_joint4
-    - rarm_gripper_joint
+    - rarm_joint5
+    - rarm_joint6
 
   state_publish_rate:  100            # Override default
   action_monitor_rate: 100            # Override default
@@ -57,7 +60,8 @@ larm_controller:
     - larm_joint2
     - larm_joint3
     - larm_joint4
-    - larm_gripper_joint
+    - larm_joint5
+    - larm_joint6
 
   state_publish_rate:  100            # Override default
   action_monitor_rate: 100            # Override default
@@ -71,13 +75,15 @@ kxr_fullbody_controller:
     - rarm_joint2
     - rarm_joint3
     - rarm_joint4
-    - rarm_gripper_joint
+    - rarm_joint5
+    - rarm_joint6
     - larm_joint0
     - larm_joint1
     - larm_joint2
     - larm_joint3
     - larm_joint4
-    - larm_gripper_joint
+    - larm_joint5
+    - larm_joint6
     - head_joint0
     - head_joint1
 # gazebo_ros_control:
@@ -89,10 +95,12 @@ kxr_fullbody_controller:
 #     larm_joint2: {p: 1.0, i: 0.01, d: 0.1}
 #     larm_joint3: {p: 1.0, i: 0.01, d: 0.1}
 #     larm_joint4: {p: 1.0, i: 0.01, d: 0.1}
-#     larm_gripper_joint: {p: 1.0, i: 0.01, d: 0.1}
+#     larm_joint5: {p: 1.0, i: 0.01, d: 0.1}
+#     larm_joint6: {p: 1.0, i: 0.01, d: 0.1}
 #     rarm_joint0: {p: 1.0, i: 0.01, d: 0.1}
 #     rarm_joint1: {p: 1.0, i: 0.01, d: 0.1}
 #     rarm_joint2: {p: 1.0, i: 0.01, d: 0.1}
 #     rarm_joint3: {p: 1.0, i: 0.01, d: 0.1}
 #     rarm_joint4: {p: 1.0, i: 0.01, d: 0.1}
-#     rarm_gripper_joint: {p: 1.0, i: 0.01, d: 0.1}
+#     rarm_joint5: {p: 1.0, i: 0.01, d: 0.1}
+#     rarm_joint6: {p: 1.0, i: 0.01, d: 0.1}

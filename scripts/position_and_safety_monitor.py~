@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+
+import rospy
+import numpy as np
+from apriltag_ros.msg import AprilTagDetectionArray
+from geometry_msgs.msg import PointStamped
+from std_msgs.msg import Bool
+import tf2_ros
+from tf.transformations import quaternion_matrix
+
+
+class PositionAndSafetyMonitor:
+    def __init__(self):
+        rospy.init_node("position_and_safety_monitor")
+        self.tag_sub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.tag_callback)
+        self.position_pub = rospy.Publisher("/coarse_position", PointStamped, queue_size=10)
+        self.safety_pub = rospy.Publisher("/is_safe", Bool, queue_size=10)
+
+        self.tag_positions = {
+            100: (0.00, 0.00), 101: (0.00, 0.28), 102: (0.00, 0.57), 103: (0.00, 0.85), 104: (0.00, 1.14),
+            105: (0.25, 0.00), 106: (0.25, 0.28), 107: (0.25, 0.57), 108: (0.25, 0.85), 109: (0.25, 1.14),
+            110: (0.50, 0.00), 111: (0.50, 0.28), 112: (0.50, 0.57), 113: (0.50, 0.85), 114: (0.50, 1.14),
+        }
+
+        self.tf_buffer = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+
+        self.x_min = -0.05
+        self.x_max = 0.55
+        self.y_min = -0.05
+        self.y_max = 1.19
+
+        self.last_safe_time = rospy.Time.now()
+        self.safe_timeout = rospy.Duration(1.0)
+
+        rospy.sleep(2.0)  # TF安定化待ち
+
+    def tag_callback(self, msg):
+        if not msg.detections:
+            if rospy.Time.now() - self.last_safe_time > self.safe_timeout:
+                self.safety_pub.publish(Bool(False))
+            return
+
+        # 最も近いTagを選ぶ（zが小さい = 距離が近い）
+        best_detection = min(
+            msg.detections,
+            key=lambda d: d.pose.pose.pose.position.z
+        )
+
+        tag_id = best_detection.id[0]
+        if tag_id not in self.tag_positions:
+            rospy.logwarn(f"[WARN] Unknown tag ID: {tag_id}")
+            return
+
+        try:
+            tag_pose = best_detection.pose.pose.pose  # Tag→CameraのPose
+            tag_world_xy = self.tag_positions[tag_id]
+
+            # TF: camera_color_optical_frame → base_link
+            tf_camera_to_base = self.tf_buffer.lookup_transform(
+                "camera_color_optical_frame", "base_link", rospy.Time(0), rospy.Duration(0.5)
+            )
+
+            # 推定処理
+            base_x, base_y = self.estimate_base_position_from_tag_pose(
+                tag_pose, tag_world_xy, tf_camera_to_base
+            )
+
+            point = PointStamped()
+            point.header.frame_id = "place-0"
+            point.header.stamp = rospy.Time.now()
+            point.point.x = base_x
+            point.point.y = base_y
+            point.point.z = 0.0
+            self.position_pub.publish(point)
+
+            is_safe = self.x_min <= base_x <= self.x_max and self.y_min <= base_y <= self.y_max
+            self.safety_pub.publish(Bool(is_safe))
+
+            rospy.loginfo(f"[INFO] Tag {tag_id} → Estimated base_link in place-0: x={base_x:.3f}, y={base_y:.3f}")
+
+            if is_safe:
+                self.last_safe_time = rospy.Time.now()
+
+        except Exception as e:
+            rospy.logwarn(f"[TF ERROR] Failed transform for tag {tag_id}: {e}")
+
+    def estimate_base_position_from_tag_pose(self, tag_pose, tag_world_xy, tf_camera_to_base):
+        """
+        Tag→CameraのPoseとタグのワールド位置から、base_linkの自己位置を推定
+        """
+        # 1. Tag→Cameraの変換行列
+        q = tag_pose.orientation
+        T_tag_to_cam = quaternion_matrix([q.x, q.y, q.z, q.w])
+        T_tag_to_cam[:3, 3] = [tag_pose.position.x, tag_pose.position.y, tag_pose.position.z]
+
+        # 2. Camera→Tagの逆変換
+        T_cam_in_tag = np.linalg.inv(T_tag_to_cam)
+        cam_in_tag = T_cam_in_tag[:3, 3]
+
+        # 3. カメラのワールド座標（Tag基準 + タグのワールド座標）
+        cam_world_x = tag_world_xy[0] + cam_in_tag[0]
+        cam_world_y = tag_world_xy[1] + cam_in_tag[1]
+
+        # 4. camera→base_linkの平行移動ベクトルだけ加算
+        dx = tf_camera_to_base.transform.translation.x
+        dy = tf_camera_to_base.transform.translation.y
+
+        base_world_x = cam_world_x + dx
+        base_world_y = cam_world_y + dy
+
+        return base_world_x, base_world_y
+
+
+if __name__ == "__main__":
+    PositionAndSafetyMonitor()
+    rospy.spin()
+
+
+
+

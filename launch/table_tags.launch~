@@ -1,0 +1,18 @@
+<launch>
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_1" args="0 0.28 0 0 0 0 place-0 place-1 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_2" args="0 0.57 0 0 0 0 place-0 place-2 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_3" args="0 0.85 0 0 0 0 place-0 place-3 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_4" args="0 1.14 0 0 0 0 place-0 place-4 100" />
+
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_5" args="0.25 0 0 0 0 0 place-0 place-5 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_6" args="0.25 0.28 0 0 0 0 place-0 place-6 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_7" args="0.25 0.57 0 0 0 0 place-0 place-7 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_8" args="0.25 0.85 0 0 0 0 place-0 place-8 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_9" args="0.25 1.14 0 0 0 0 place-0 place-9 100" />
+
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_10" args="0.5 0 0 0 0 0 place-0 place-10 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_11" args="0.5 0.28 0 0 0 0 place-0 place-11 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_12" args="0.5 0.57 0 0 0 0 place-0 place-12 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_13" args="0.5 0.85 0 0 0 0 place-0 place-13 100" />
+<node pkg="tf" type="static_transform_publisher" name="static_tf_place_14" args="0.5 1.14 0 0 0 0 place-0 place-14 100" />
+</launch>
