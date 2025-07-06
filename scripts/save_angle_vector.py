@@ -113,9 +113,12 @@ def save_angle_vector_mode(ri, json_filepath=None):
                 continue
             break
         new_angles = []
+        new_time_stamps=[]
         for av in angles:
             new_angles.append([float(angle) for angle in av])
-        motion_dict[name] = new_angles
+        for t in time_stamps:
+            new_time_stamps.append(float(t.to_sec()))
+        motion_dict[name] = {"angles":new_angles,"time_stamps":new_time_stamps}
         print("saved {} motion".format(name))
         if json_filepath is not None:
             with open(json_filepath, "w") as f:
