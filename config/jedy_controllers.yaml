@@ -1,5 +1,5 @@
 # Joint State Controllers ---------------------------------------
-65;6003;1cjoint_state_controller:
+joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
 # Trajectory Controllers ---------------------------------------

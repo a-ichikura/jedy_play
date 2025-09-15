@@ -2,6 +2,7 @@
   <arg name="urdf_path" default="$(find kxr_humanoid_movebase_ichikura_version2)/urdf/jedy.urdf" />
   <arg name="servo_config_path" default="$(find kxr_humanoid_movebase_ichikura_version2)/config/jedy_servo_config.yaml" />
   <arg name="use_camera" default="false" />
+  <arg name="use_fullbody_controller" default="false"/>
 
   <!-- jedy_controllers.yaml を最初にロード -->
   <rosparam file="$(find jedy_play)/config/jedy_controllers.yaml" />
@@ -17,9 +18,14 @@
   <include file="$(find jedy_bringup)/launch/jedy_bringup.launch" >
     <arg name="urdf_path" value="$(arg urdf_path)" />
     <arg name="servo_config_path" value="$(arg servo_config_path)" />
+    <arg name="use_fullbody_controller" value="$(arg use_fullbody_controller)" />
   </include>
 
   <rosparam file="$(find jedy_play)/config/jedy_controllers.yaml" />
+<!--  <node name="arm_controllers_spawner" -->
+<!--      pkg="controller_manager" type="spawner" -->
+<!--      output="screen" -->
+<!--      args="joint_state_controller head_controller larm_controller rarm_controller"/> -->
 
   <!-- <include file="$(find kxr_controller)/launch/joy.launch" /> -->
   <node pkg="rosserial_python" name="serial_node" type="serial_node.py">
@@ -35,6 +41,19 @@
  <arg name="enable_pointcloud" value="true"/>
 </include>
 </group>
+
+<include file="$(find respeaker_ros)/launch/sample_respeaker.launch" />
+
+  <!-- ReSpeakerで /tone_sequence を再生するノード -->
+  <node pkg="jedy_play" type="tone_player_alsa.py" name="tone_player_alsa" output="screen">
+    <!-- private params（rosrun の _alsa_device:=pulse と同等）-->
+    <param name="~alsa_device" value="pulse"/>
+    <!-- 必要なら 1→2 にするとL=Rのステレオで出せます -->
+    <param name="~channels" value="1"/>
+    <!-- 明示したい場合だけ（通常は不要）
+    <remap from="tone_sequence" to="/tone_sequence"/>
+    -->
+  </node>
 
 
 </launch>
