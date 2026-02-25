@@ -44,16 +44,22 @@
 
 <include file="$(find respeaker_ros)/launch/sample_respeaker.launch" />
 
-  <!-- ReSpeakerで /tone_sequence を再生するノード -->
-  <node pkg="jedy_play" type="tone_player_alsa.py" name="tone_player_alsa" output="screen">
-    <!-- private params（rosrun の _alsa_device:=pulse と同等）-->
-    <param name="~alsa_device" value="pulse"/>
-    <!-- 必要なら 1→2 にするとL=Rのステレオで出せます -->
-    <param name="~channels" value="1"/>
-    <!-- 明示したい場合だけ（通常は不要）
-    <remap from="tone_sequence" to="/tone_sequence"/>
-    -->
-  </node>
+<node pkg="jedy_play" type="tone_player_alsa.py" name="tone_player_alsa" output="screen">
+  <param name="~alsa_device" value="pulse"/>
+  <param name="~channels" value="2"/>
+
+  <!-- chimeを土台に“コロコロ”化 -->
+  <param name="~preset" value="blip"/>
+  <param name="~adsr_decay_ms" value="100"/>    <!-- 余韻を早めに落とす -->
+  <param name="~adsr_release_ms" value="60"/>   <!-- 余韻を短く（クリックが出たら80〜120に戻す） -->
+  <param name="~vibrato_hz" value="8"/>         <!-- 速めのビブラート -->
+  <param name="~vibrato_cents" value="28"/>     <!-- ±25〜35centsくらいが“おしゃべり感” -->
+  <param name="~tremolo_hz" value="6"/>         <!-- 音量のゆらぎ -->
+  <param name="~tremolo_depth" value="0.18"/>   <!-- 0.12〜0.25で微調整 -->
+  <param name="~harmonics" value="1:1.0,2:0.25,3:0.12"/> <!-- 三角に少し倍音でキラッと -->
+  <param name="~gap_ms" value="8"/>             <!-- ノート間に短い無音→“プチッ”と切れてコロコロ感UP -->
+  <param name="~gain" value="0.65"/>            <!-- 全体ゲイン。歪むなら0.55〜0.6へ -->
+</node>
 
 
 </launch>
