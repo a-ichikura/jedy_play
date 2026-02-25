@@ -1,50 +1,10 @@
-# Jedyでペイントを行う[WIP]
+# Jedyでペイントを行う
 ## 実行方法
 jedyの体内で
 
 ```
-roslaunch jedy_play jedy.launch
+roslaunch jedy_play new_jedy.launch use_camera:=true
 ```
-↑minmal.launchの立ち上げ+M5 stick C Plusとの通信開始
-手元のPCでPythonコードで実行
-```
-cd scripts
-python main.py
-## low, middle, high のいずれかを打ち込むと動作するはず
-```
+↑minmal.launchの立ち上げ+M5 stick C Plusとの通信開始+カメラの起動
 
-## 動き方
-### LOW
-1.スタート\
-2.LEDが白く光る  
-3.音がなる (Help!)\
-4.LEDがほしい絵の具の色に光る（ランダム、赤、青、緑)\
-5.ロボットの手をとって絵の具をつける\
-6.ボタンを押す\
-7.音がなる（Ready!)\
-8.ロボットの手をとって絵を描く(10秒間)\
-9.音がなる(Joy!)\
-10.終了（LED消灯)
 
-### Middle
-1.スタート\
-2.LEDが白く光る  
-3.音がなる (Help!)\
-4.LEDがほしい絵の具の色に光る（ランダム、赤、青、緑）\
-5.ロボットの手をとって絵の具をつける\
-6.ボタンを押す\
-7.音がなる（Ready!)\
-8.ロボットがひとりでに描き出す\
-9.音がなる(Joy!)\
-10.終了（LED消灯）
-
-### High
-1.スタート\
-2.LEDが白く光る   
-3.音がなる (Help!)\
-4.LEDがほしい絵の具の色に光る（ランダム、赤、青、緑）\
-5.ロボットが絵の具に手を伸ばす\
-7.音がなる（Ready!)\
-8.ロボットがひとりでに描き出す\
-9.音がなる(Joy!)\
-10.終了（LED消灯）
